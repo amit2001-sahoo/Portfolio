@@ -27,8 +27,13 @@ const Hero = () => {
 
         <div className="mt-10 flex justify-center gap-4">
           <a href="#projects"
-          className="px-6 py-3 bg-indigo-500 text-white rounded-lg font-medium hover:bg-indigo-900 transition">
+          className="px-6 py-3 bg-indigo-900 text-white rounded-lg font-medium hover:bg-indigo-900 transition">
             View Projects
+          </a>
+
+          <a href="/resume"
+          className="px-6 py-3 bg-indigo-600 border border-gray-600 rounded-lg font-medium transition">
+            View Resume
           </a>
 
           <a href="#contact"

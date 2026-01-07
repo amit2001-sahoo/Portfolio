@@ -1,6 +1,43 @@
 import { motion } from "framer-motion"
+import { useState } from "react"
 
 const Contact = () => {
+    const [form, setForm] = useState({
+        name:"",
+        email:"",
+        message:""
+    })
+
+    const [loading, setLoading] = useState(false)
+    const [status, setStatus] = useState(null)
+
+    const handleChange = (e) => {
+        setForm({...form, [e.target.name]: e.target.value})
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        setStatus(null)
+    try{
+        const res = await fetch("api/contact", {
+            method: "POST",
+            headers: {"Content_Type": "application/json"},
+            body: JSON.stringify(form),
+        })
+
+        if (!res.ok) throw new Error()
+        
+        setStatus("success")
+        setForm({ name: "", email: "", message: "" })
+    }
+    catch {
+        setStatus("error")
+    }
+    finally {
+        setLoading(false)
+    }
+    }
   return (
     <section
       id="contact"
@@ -67,33 +104,54 @@ const Contact = () => {
             viewport={{ once: true }}
             className="bg-black/60 backdrop-blur-xl border border-gray-800 rounded-3xl p-8 md:p-10"
           >
-            <form className="flex flex-col gap-6">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
 
-              <input
-                type="text"
+            <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
                 placeholder="Your name"
-                className="bg-transparent border border-gray-700 rounded-xl px-5 py-3 focus:outline-none focus:border-indigo-500 transition"
-              />
+                required
+                className="bg-transparent border border-gray-700 rounded-xl px-5 py-3"
+            />
 
-              <input
+            <input
+                name="email"
                 type="email"
+                value={form.email}
+                onChange={handleChange}
                 placeholder="Your email"
-                className="bg-transparent border border-gray-700 rounded-xl px-5 py-3 focus:outline-none focus:border-indigo-500 transition"
-              />
+                required
+                className="bg-transparent border border-gray-700 rounded-xl px-5 py-3"
+            />
 
-              <textarea
+            <textarea
+                name="message"
                 rows="4"
-                placeholder="Tell me about your project or idea"
-                className="bg-transparent border border-gray-700 rounded-xl px-5 py-3 focus:outline-none focus:border-indigo-500 transition resize-none"
-              />
+                value={form.message}
+                onChange={handleChange}
+                placeholder="Your message"
+                required
+                className="bg-transparent border border-gray-700 rounded-xl px-5 py-3"
+            />
 
-              <button
+            <button
                 type="submit"
-                className="mt-2 bg-indigo-500 hover:bg-indigo-600 transition rounded-xl px-6 py-3 font-medium text-white shadow-lg shadow-indigo-500/30"
-              >
-                Send Message →
-              </button>
+                disabled={loading}
+                className="bg-indigo-500 rounded-xl px-6 py-3 text-white"
+            >
+                {loading ? "Sending..." : "Send Message →"}
+            </button>
+
+            {status === "success" && (
+                <p className="text-green-500 text-sm">Message sent successfully!</p>
+            )}
+            {status === "error" && (
+                <p className="text-red-500 text-sm">Something went wrong. Try again.</p>
+            )}
+
             </form>
+
           </motion.div>
 
         </div>
