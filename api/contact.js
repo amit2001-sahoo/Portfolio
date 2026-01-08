@@ -9,18 +9,6 @@ export default async function handler(req, res) {
     }
     const {name, email, message} = req.body
 
-    if(!name){
-        return res.status(400).json({message:"missing field 'name'"})
-    }
-
-    if(!email){
-        return res.status(400).json({message:"missing field 'email'"})
-    }
-
-    if(!message){
-        return res.status(400).json({message:"missing field 'message'"})
-    }
-
     try{
         const transporter = nodemailer.createTransport({
             service: "gmail",
