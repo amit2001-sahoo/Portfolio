@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, message:"Message Sent Successfully." })
     }
     catch (error) {
-    return res.status(500).json({ message: "Failed to send message" })
+    return res.status(500).json({ message: `Failed to send message ${error}` })
   }
     
 }
